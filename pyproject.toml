@@ -1,12 +1,12 @@
 [project]
-name = "fastapi-template"
+name = "chats_test_api"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "rukiqq",email = "mitaka@duck.com"}
+    {name = "fern",email = "mitaka@duck.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13,<4.0"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "fastapi (>=0.121.2,<0.122.0)",
     "alembic (>=1.17.2,<2.0.0)",
