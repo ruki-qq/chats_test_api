@@ -18,7 +18,7 @@ class Message(Base):
     Fields:
         chat_id: INT - points at this message's chat (M-1)
         text: VARCHAR - message text, non-empty, max lenght (5000)
-        created_at: date - message's creation time
+        created_at: timestamp with time zone - message's creation time
 
     Relationships:
         chat: Chat - points at this message's chat

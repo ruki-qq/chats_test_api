@@ -16,7 +16,7 @@ class Chat(Base):
 
     Fields:
         title: VARCHAR - chat title, must not be empty
-        created_at: date - chat's creation time
+        created_at: timestamp with time zone - chat's creation time
 
     Relationships:
         messages: lits[Message] - points at chat's messages
