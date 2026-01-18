@@ -19,7 +19,11 @@ class ChatResponse(ChatBase):
     id: int
     created_at: datetime
 
+    model_config = {"from_attributes": True}
+
 
 class ChatWithMessages(BaseModel):
     chat: ChatResponse
     messages: list["MessageResponse"]
+
+    model_config = {"from_attributes": True}

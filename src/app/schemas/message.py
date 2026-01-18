@@ -15,3 +15,5 @@ class MessageResponse(MessageBase):
     id: int
     chat_id: int
     created_at: datetime
+
+    model_config = {"from_attributes": True}
