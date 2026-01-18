@@ -30,7 +30,7 @@ class Message(Base):
     )
     text: Mapped[str] = mapped_column(
         String(5000),
-        CheckConstraint("length(video_path) > 0", name="video_path_not_empty"),
+        CheckConstraint("length(text) > 0", name="text_not_empty"),
         nullable=False,
     )
     created_at: Mapped[datetime] = mapped_column(

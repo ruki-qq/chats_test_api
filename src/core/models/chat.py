@@ -24,7 +24,7 @@ class Chat(Base):
 
     title: Mapped[str] = mapped_column(
         String(200),
-        CheckConstraint("length(video_path) > 0", name="video_path_not_empty"),
+        CheckConstraint("length(title) > 0", name="title_not_empty"),
         nullable=False,
         index=True,
     )
