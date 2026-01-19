@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from core.models import Chat, Message
 
@@ -100,7 +100,7 @@ class ChatService:
         return message
 
     @classmethod
-    async def delete_chat(cls, session: AsyncSession, chat_id: int) -> None:
+    async def delete_chat(cls, session: AsyncSession, chat_id: int):
         """
         Delete chat by id
 
@@ -115,5 +115,7 @@ class ChatService:
         chat = await cls.get_chat(session, chat_id)
         if not chat:
             raise HTTPException(status_code=404, detail="Chat not found")
+
+        await session.execute(delete(Message).where(Message.chat_id == chat_id))
         await session.delete(chat)
         await session.commit()
