@@ -154,6 +154,18 @@ class TestDeleteChat:
         get_response = await client.get(f"{CHAT_URL}/{chat_id}")
         assert get_response.status_code == 404
 
+    async def test_delete_chat_with_message_success(self, client: AsyncClient):
+        create_response = await create_chat(client, "To Be Deleted")
+        chat_id = create_response.json()["id"]
+
+        await create_message(client, chat_id, "Message")
+
+        response = await client.delete(f"{CHAT_URL}/{chat_id}")
+        assert response.status_code == 204
+
+        get_response = await client.get(f"{CHAT_URL}/{chat_id}")
+        assert get_response.status_code == 404
+
     async def test_delete_chat_not_found(self, client: AsyncClient):
         """Deleting a non-existent chat"""
 
