@@ -9,10 +9,8 @@ from app.schemas.message import MessageCreate, MessageResponse
 
 router = APIRouter(prefix="/chats", tags=["chats"])
 
-messages_router = APIRouter(tags=["messages"])
 
-
-@router.post("/", response_model=ChatResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=ChatResponse, status_code=status.HTTP_201_CREATED)
 async def create_new_chat(
     chat_in: ChatCreate,
     session: AsyncSession = Depends(db_helper.session_dependency),
@@ -47,7 +45,7 @@ async def remove_chat(
     await ChatService.delete_chat(session, chat_id)
 
 
-@messages_router.post(
+@router.post(
     "/{chat_id}/messages",
     response_model=MessageResponse,
     status_code=status.HTTP_201_CREATED,
@@ -59,6 +57,3 @@ async def send_message_to_chat(
 ):
     message = await ChatService.create_message(session, chat_id, message_in.text)
     return MessageResponse.model_validate(message)
-
-
-router.include_router(messages_router)
