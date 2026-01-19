@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core import db_helper
+from core import db_helper, get_logger
 from app.services import ChatService
 from app.schemas.chat import ChatCreate, ChatResponse, ChatWithMessages
 from app.schemas.message import MessageCreate, MessageResponse
 
 
+logger = get_logger(__name__)
 router = APIRouter(prefix="/chats", tags=["chats"])
 
 
@@ -15,6 +16,7 @@ async def create_new_chat(
     chat_in: ChatCreate,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    logger.debug("Creating a new chat via ChatService.create_chat")
     chat = await ChatService.create_chat(session, chat_in.title)
     return ChatResponse.model_validate(chat)
 
@@ -25,6 +27,9 @@ async def get_chat_detail(
     limit: int = Query(20, ge=1, le=100),
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    logger.debug(
+        f"Getting a details for chat with id: {chat_id} via ChatService.get_chat"
+    )
     chat = await ChatService.get_chat(session, chat_id)
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
@@ -42,6 +47,7 @@ async def remove_chat(
     chat_id: int,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    logger.debug(f"Deleting a chat with id: {chat_id} via ChatService.delete_chat")
     await ChatService.delete_chat(session, chat_id)
 
 
@@ -55,5 +61,8 @@ async def send_message_to_chat(
     message_in: MessageCreate,
     session: AsyncSession = Depends(db_helper.session_dependency),
 ):
+    logger.debug(
+        f"Sending a message to a chat with id: {chat_id} via ChatService.create_message"
+    )
     message = await ChatService.create_message(session, chat_id, message_in.text)
     return MessageResponse.model_validate(message)
